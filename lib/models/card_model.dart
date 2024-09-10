@@ -15,6 +15,7 @@ class CardModel {
     required this.price,
   });
 
+  // Método factory para crear una instancia del modelo desde JSON
   factory CardModel.fromJson(Map<String, dynamic> json) {
     return CardModel(
       id: json['id'],

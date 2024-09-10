@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/card_provider.dart';
-import 'views/card_list.dart';
-import 'components/atoms/app_style.dart'; // Importamos los estilos
+import 'components/organisms/card_list.dart';
+import 'components/atoms/app_style.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           primaryColor: AppStyle.primaryColor,
           scaffoldBackgroundColor: AppStyle.primaryColor,
-          colorScheme: ColorScheme.dark(
+          colorScheme: const ColorScheme.dark(
             primary: AppStyle.primaryColor,
             secondary: AppStyle.accentColor,
           ),
@@ -29,11 +31,11 @@ class MyApp extends StatelessWidget {
             bodyLarge: AppStyle.cardDescriptionStyle,
             bodyMedium: AppStyle.cardTitleStyle,
           ),
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             color: AppStyle.primaryColor,
           ),
         ),
-        home: CardList(),
+        home: const CardList(),
       ),
     );
   }

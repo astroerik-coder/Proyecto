@@ -3,7 +3,7 @@ import '../services/api_service.dart';
 import '../models/card_model.dart';
 
 class CardProvider with ChangeNotifier {
-  List<Datum> _cards = [];
+  final List<Datum> _cards = [];
   bool _loading = false;
   int _offset = 0;
   final int _limit = 10;
@@ -16,8 +16,9 @@ class CardProvider with ChangeNotifier {
   bool get hasMore => _hasMore;
 
   Future<void> loadMoreCards() async {
-    if (_loading || !_hasMore)
+    if (_loading || !_hasMore) {
       return; // Evitar duplicar llamadas o seguir si no hay más cartas
+    }
     _loading = true;
     _errorMessage = '';
     notifyListeners();

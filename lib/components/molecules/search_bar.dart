@@ -7,10 +7,10 @@ class CustomSearchBar extends StatelessWidget {
   final Function(String) onSearch;
 
   const CustomSearchBar({
-    Key? key,
+    super.key,
     required this.searchController,
     required this.onSearch,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

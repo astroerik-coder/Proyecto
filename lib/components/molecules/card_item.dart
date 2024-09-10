@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import '../../models/card_model.dart'; // Asegúrate de importar el modelo correcto
-import '../atoms/card_image.dart';
+import 'package:yugioh/components/organisms/card_detail.dart';
+import '../../models/card_model.dart';
 import '../atoms/styled_text.dart';
 import '../atoms/app_style.dart';
-import '../../views/card_detail.dart';
+import '../atoms/card_image_atom.dart';
 
 class CardItem extends StatelessWidget {
-  final Datum card; // Cambia de CardModel a Datum
+  final Datum card;
 
-  const CardItem({Key? key, required this.card}) : super(key: key);
+  const CardItem({super.key, required this.card});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navega a la pantalla de detalle de la carta
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                CardDetail(card: card), // Asegúrate de pasar el objeto Datum
+            builder: (context) => CardDetail(card: card),
           ),
         );
       },
@@ -30,27 +28,14 @@ class CardItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagen de la carta
-            Center(
-              child: (card.cardImages != null && card.cardImages!.isNotEmpty)
-                  ? Image.network(
-                      card.cardImages![0]
-                          .imageUrl, // Accedemos a la primera imagen solo si está disponible
-                      height: 100.0,
-                      width: 70.0,
-                      fit: BoxFit.cover, // Ajustar la imagen
-                    )
-                  : Container(
-                      // Mostramos un contenedor vacío si no hay imágenes
-                      height: 100.0,
-                      width: 70.0,
-                      color: Colors
-                          .grey, // Podrías usar un color de fondo o un placeholder aquí
-                    ),
+            CardImageAtom(
+              imageUrl: (card.cardImages != null && card.cardImages!.isNotEmpty)
+                  ? card.cardImages![0].imageUrl
+                  : null,
+              height: 100.0,
+              width: 70.0,
             ),
-
-            SizedBox(width: 16.0),
-            // Información de la carta
+            const SizedBox(width: 16.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,12 +44,12 @@ class CardItem extends StatelessWidget {
                     text: card.name,
                     style: AppStyle.cardTitleStyle,
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   StyledText(
-                    text: card.desc ??
-                        'No description available', // Proporcionamos un valor predeterminado si `desc` es null
+                    text: card.desc ?? 'No description available',
                     style: AppStyle.cardDescriptionStyle,
-                    maxLines: 3, // Limitamos el número de líneas
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

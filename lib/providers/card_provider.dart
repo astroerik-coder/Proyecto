@@ -3,12 +3,12 @@ import '../models/card_model.dart';
 import '../services/api_service.dart';
 
 class CardProvider with ChangeNotifier {
-  List<CardModel> _cards = [];
+  List<Datum> _cards = [];
   bool _loading = false;
   int _offset = 0;
   final int _limit = 10;
 
-  List<CardModel> get cards => _cards;
+  List<Datum> get cards => _cards;
   bool get loading => _loading;
 
   Future<void> loadMoreCards() async {
@@ -17,7 +17,7 @@ class CardProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      List<CardModel> newCards =
+      List<Datum> newCards =
           await ApiService().fetchCards(limit: _limit, offset: _offset);
       print('Cartas cargadas: ${newCards.length}');
       _cards.addAll(newCards);

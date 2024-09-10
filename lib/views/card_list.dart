@@ -18,7 +18,6 @@ class _CardListState extends State<CardList> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        // Si el scroll está al final, cargamos más cartas
         Provider.of<CardProvider>(context, listen: false).loadMoreCards();
       }
     });
@@ -35,19 +34,15 @@ class _CardListState extends State<CardList> {
               child:
                   CircularProgressIndicator()) // Muestra un indicador de carga inicial
           : ListView.builder(
-              controller: _scrollController, // Asigna el controlador de scroll
-              itemCount: cardProvider.cards.length +
-                  (cardProvider.loading
-                      ? 1
-                      : 0), // Añadimos un item extra si estamos cargando más
+              controller: _scrollController,
+              itemCount:
+                  cardProvider.cards.length + (cardProvider.loading ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == cardProvider.cards.length) {
                   return Center(
                       child:
                           CircularProgressIndicator()); // Indicador de carga cuando se cargan más
                 }
-
-                // Renderizamos cada carta
                 return CardItem(card: cardProvider.cards[index]);
               },
             ),
@@ -56,7 +51,6 @@ class _CardListState extends State<CardList> {
 
   @override
   void dispose() {
-    // Limpiamos el controlador de scroll cuando el widget se elimina
     _scrollController.dispose();
     super.dispose();
   }

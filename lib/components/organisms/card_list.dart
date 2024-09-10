@@ -5,6 +5,7 @@ import '../molecules/filter_bar.dart';
 import '../molecules/search_bar.dart';
 import '../../providers/card_provider.dart';
 import '../atoms/app_style.dart';
+import '../atoms/floating_action_button_atom.dart';
 
 class CardList extends StatefulWidget {
   const CardList({super.key});
@@ -17,6 +18,7 @@ class _CardListState extends State<CardList> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+
   String? selectedType;
   String? selectedRace;
   String? selectedArchetype;
@@ -35,9 +37,30 @@ class _CardListState extends State<CardList> {
     }
   }
 
+  void _resetFilters() {
+    setState(() {
+      selectedType = null;
+      selectedRace = null;
+      selectedArchetype = null;
+      _searchController.clear();
+      _searchQuery = '';
+    });
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cardProvider = Provider.of<CardProvider>(context);
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     final filteredCards = cardProvider.cards.where((card) {
       final matchesSearchQuery =
@@ -60,7 +83,43 @@ class _CardListState extends State<CardList> {
       ),
       body: Column(
         children: [
-          // Barra de filtros
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.02,
+              vertical: screenHeight * 0.01,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomSearchBar(
+                    searchController: _searchController,
+                    onSearch: (query) {
+                      setState(() {
+                        _searchQuery = query;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                IconButton(
+                  onPressed: _resetFilters,
+                  icon: const Icon(Icons.refresh, color: AppStyle.accentColor),
+                  tooltip: 'Resetear filtros',
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              'Cartas cargadas: ${filteredCards.length}',
+              style: TextStyle(
+                color: AppStyle.textColor.withOpacity(0.7),
+                fontSize: 14.0,
+              ),
+            ),
+          ),
+
           FilterBar(
             selectedType: selectedType,
             selectedRace: selectedRace,
@@ -81,14 +140,7 @@ class _CardListState extends State<CardList> {
               });
             },
           ),
-          CustomSearchBar(
-            searchController: _searchController,
-            onSearch: (query) {
-              setState(() {
-                _searchQuery = query;
-              });
-            },
-          ),
+          // Lista de cartas
           Expanded(
             child: cardProvider.cards.isEmpty && cardProvider.loading
                 ? const Center(child: CircularProgressIndicator())
@@ -105,6 +157,10 @@ class _CardListState extends State<CardList> {
                   ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButtonAtom(
+        onPressed: _scrollToTop,
+        icon: Icons.arrow_upward,
       ),
     );
   }

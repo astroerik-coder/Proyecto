@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:yugioh/components/organisms/card_detail.dart';
 import '../../models/card_model.dart';
-import '../atoms/styled_text.dart';
 import '../atoms/app_style.dart';
+import '../atoms/styled_text.dart';
 import '../atoms/card_image_atom.dart';
+import 'package:yugioh/components/organisms/card_detail.dart';
 
 class CardItem extends StatelessWidget {
   final Datum card;
@@ -12,6 +12,9 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -28,28 +31,34 @@ class CardItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CardImageAtom(
-              imageUrl: (card.cardImages != null && card.cardImages!.isNotEmpty)
-                  ? card.cardImages![0].imageUrl
-                  : null,
-              height: 100.0,
-              width: 70.0,
+            // Imagen de la carta
+            Center(
+              child: CardImageAtom(
+                imageUrl: card.cardImages != null && card.cardImages!.isNotEmpty
+                    ? card.cardImages![0].imageUrl
+                    : null,
+                height: screenHeight * 0.15,
+                width: screenWidth * 0.16,
+              ),
             ),
-            const SizedBox(width: 16.0),
+            SizedBox(width: screenWidth * 0.04),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   StyledText(
                     text: card.name,
-                    style: AppStyle.cardTitleStyle,
+                    style: AppStyle.cardTitleStyle.copyWith(
+                      fontSize: screenWidth * 0.05,
+                    ),
                   ),
-                  const SizedBox(height: 8.0),
+                  SizedBox(height: screenHeight * 0.01),
                   StyledText(
                     text: card.desc ?? 'No description available',
-                    style: AppStyle.cardDescriptionStyle,
+                    style: AppStyle.cardDescriptionStyle.copyWith(
+                      fontSize: screenWidth * 0.035,
+                    ),
                     maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

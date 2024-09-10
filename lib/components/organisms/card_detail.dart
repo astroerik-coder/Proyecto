@@ -14,9 +14,15 @@ class CardDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(card.name, style: const TextStyle(color: Colors.white)),
+        title: Text(
+          card.name,
+          style: const TextStyle(color: Colors.white),
+        ),
         backgroundColor: AppStyle.primaryColor,
         elevation: 0,
       ),
@@ -25,6 +31,7 @@ class CardDetail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Imagen de la carta
             Center(
               child: GestureDetector(
                 onTap: () {
@@ -48,8 +55,8 @@ class CardDetail extends StatelessWidget {
                       card.cardImages != null && card.cardImages!.isNotEmpty
                           ? card.cardImages![0].imageUrl
                           : null,
-                  height: 250.0,
-                  width: 180.0,
+                  height: screenHeight * 0.35,
+                  width: screenWidth * 0.45,
                 ),
               ),
             ),
@@ -62,11 +69,12 @@ class CardDetail extends StatelessWidget {
                   StyledText(
                     text: card.name,
                     style: AppStyle.headingStyle.copyWith(
-                      fontSize: 24,
+                      fontSize:
+                          screenWidth * 0.06, // Ajusta el tamaño del texto
                       color: AppStyle.accentColor,
                     ),
                   ),
-                  Divider(color: Colors.grey[300], height: 20.0),
+                  const Divider(color: Colors.grey, height: 20.0),
                   CardDetailTextAtom(label: "ID", value: card.id.toString()),
                   CardDetailTextAtom(label: "Tipo", value: card.type),
                   CardDetailTextAtom(
@@ -84,7 +92,10 @@ class CardDetail extends StatelessWidget {
                 children: [
                   StyledText(
                     text: card.desc ?? 'No description available',
-                    style: AppStyle.subheadingStyle,
+                    style: AppStyle.subheadingStyle.copyWith(
+                      fontSize:
+                          screenWidth * 0.045, // Ajusta el tamaño del texto
+                    ),
                   ),
                   const SizedBox(height: 16.0),
                   CardDetailTextAtom(label: "Raza", value: card.race),
@@ -96,7 +107,6 @@ class CardDetail extends StatelessWidget {
             ),
             const SizedBox(height: 24.0),
 
-            // Conjuntos de cartas
             if (card.cardSets != null && card.cardSets!.isNotEmpty)
               CardListSection(
                 title: "Conjuntos:",
@@ -105,7 +115,6 @@ class CardDetail extends StatelessWidget {
                 }).toList(),
               ),
 
-            // Precios
             if (card.cardPrices != null && card.cardPrices!.isNotEmpty)
               CardListSection(
                 title: "Precios:",

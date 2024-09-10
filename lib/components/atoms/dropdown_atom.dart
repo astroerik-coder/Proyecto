@@ -41,10 +41,9 @@ class DropdownAtom extends StatelessWidget {
         hint: Text(hint,
             style: TextStyle(
                 color: textColor ?? AppStyle.textColor.withOpacity(0.5))),
-        dropdownColor:
-            dropdownColor ?? AppStyle.primaryColor, // Fondo oscuro por defecto
-        iconEnabledColor: iconColor ?? AppStyle.accentColor, // Color del ícono
-        underline: const SizedBox.shrink(), // Elimina la línea subrayada
+        dropdownColor: dropdownColor ?? AppStyle.primaryColor,
+        iconEnabledColor: iconColor ?? AppStyle.accentColor,
+        underline: const SizedBox.shrink(),
         items: items.map((String item) {
           return DropdownMenuItem<String>(
             value: item,

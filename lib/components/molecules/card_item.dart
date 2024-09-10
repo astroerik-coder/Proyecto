@@ -32,13 +32,21 @@ class CardItem extends StatelessWidget {
           children: [
             // Imagen de la carta
             Center(
-              child: Image.network(
-                card.cardImages[0]
-                    .imageUrl, // Usamos el primer enlace de imagen disponible
-                height: 100.0,
-                width: 70.0,
-                fit: BoxFit.cover, // Para que la imagen se ajuste correctamente
-              ),
+              child: (card.cardImages != null && card.cardImages!.isNotEmpty)
+                  ? Image.network(
+                      card.cardImages![0]
+                          .imageUrl, // Accedemos a la primera imagen solo si está disponible
+                      height: 100.0,
+                      width: 70.0,
+                      fit: BoxFit.cover, // Ajustar la imagen
+                    )
+                  : Container(
+                      // Mostramos un contenedor vacío si no hay imágenes
+                      height: 100.0,
+                      width: 70.0,
+                      color: Colors
+                          .grey, // Podrías usar un color de fondo o un placeholder aquí
+                    ),
             ),
 
             SizedBox(width: 16.0),
@@ -53,10 +61,10 @@ class CardItem extends StatelessWidget {
                   ),
                   SizedBox(height: 8.0),
                   StyledText(
-                    text: card.desc,
+                    text: card.desc ??
+                        'No description available', // Proporcionamos un valor predeterminado si `desc` es null
                     style: AppStyle.cardDescriptionStyle,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3, // Limitamos el número de líneas
                   ),
                 ],
               ),

@@ -37,7 +37,11 @@ class CardDetail extends StatelessWidget {
                         },
                         child: InteractiveViewer(
                           child: Image.network(
-                            card.cardImages[0].imageUrl,
+                            // Verificamos si `cardImages` no es null y tiene al menos un elemento
+                            card.cardImages != null &&
+                                    card.cardImages!.isNotEmpty
+                                ? card.cardImages![0].imageUrl
+                                : 'https://via.placeholder.com/250', // Imagen placeholder
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -51,7 +55,10 @@ class CardDetail extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Image.network(
-                    card.cardImages[0].imageUrl,
+                    // Verificamos si `cardImages` no es null y tiene al menos un elemento
+                    card.cardImages != null && card.cardImages!.isNotEmpty
+                        ? card.cardImages![0].imageUrl
+                        : 'https://via.placeholder.com/180x250', // Imagen placeholder
                     height: 250.0,
                     width: 180.0,
                     fit: BoxFit.cover,
@@ -130,16 +137,18 @@ class CardDetail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   StyledText(
-                    text: card.desc,
+                    text: card.desc ??
+                        'No description available', // Usamos ?? para manejar null
                     style: AppStyle.subheadingStyle,
                   ),
                   SizedBox(height: 16.0),
                   StyledText(
-                    text: "Raza: ${card.race}",
+                    text:
+                        "Raza: ${card.race ?? 'Unknown'}", // También podemos manejar null aquí
                     style: AppStyle.cardDescriptionStyle,
                   ),
                   SizedBox(height: 8.0),
-                  if (card.archetype.isNotEmpty) ...[
+                  if (card.archetype != null && card.archetype!.isNotEmpty) ...[
                     StyledText(
                       text: "Arquetipo: ${card.archetype}",
                       style: AppStyle.cardDescriptionStyle,
@@ -151,7 +160,7 @@ class CardDetail extends StatelessWidget {
             SizedBox(height: 24.0),
 
             // Conjuntos de cartas
-            if (card.cardSets.isNotEmpty) ...[
+            if (card.cardSets != null && card.cardSets!.isNotEmpty) ...[
               Text(
                 "Conjuntos:",
                 style: AppStyle.cardTitleStyle.copyWith(
@@ -175,7 +184,7 @@ class CardDetail extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: card.cardSets.map((set) {
+                  children: card.cardSets!.map((set) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: StyledText(
@@ -191,7 +200,7 @@ class CardDetail extends StatelessWidget {
             SizedBox(height: 24.0),
 
             // Precios
-            if (card.cardPrices.isNotEmpty) ...[
+            if (card.cardPrices != null && card.cardPrices!.isNotEmpty) ...[
               Text(
                 "Precios:",
                 style: AppStyle.cardTitleStyle.copyWith(
@@ -218,28 +227,29 @@ class CardDetail extends StatelessWidget {
                   children: [
                     StyledText(
                       text:
-                          "CardMarket: \$${card.cardPrices[0].cardmarketPrice}",
-                      style: AppStyle.cardDescriptionStyle,
-                    ),
-                    SizedBox(height: 8.0),
-                    StyledText(
-                      text: "TCGPlayer: \$${card.cardPrices[0].tcgplayerPrice}",
-                      style: AppStyle.cardDescriptionStyle,
-                    ),
-                    SizedBox(height: 8.0),
-                    StyledText(
-                      text: "eBay: \$${card.cardPrices[0].ebayPrice}",
-                      style: AppStyle.cardDescriptionStyle,
-                    ),
-                    SizedBox(height: 8.0),
-                    StyledText(
-                      text: "Amazon: \$${card.cardPrices[0].amazonPrice}",
+                          "CardMarket: \$${card.cardPrices![0].cardmarketPrice}",
                       style: AppStyle.cardDescriptionStyle,
                     ),
                     SizedBox(height: 8.0),
                     StyledText(
                       text:
-                          "CoolStuffInc: \$${card.cardPrices[0].coolstuffincPrice}",
+                          "TCGPlayer: \$${card.cardPrices![0].tcgplayerPrice}",
+                      style: AppStyle.cardDescriptionStyle,
+                    ),
+                    SizedBox(height: 8.0),
+                    StyledText(
+                      text: "eBay: \$${card.cardPrices![0].ebayPrice}",
+                      style: AppStyle.cardDescriptionStyle,
+                    ),
+                    SizedBox(height: 8.0),
+                    StyledText(
+                      text: "Amazon: \$${card.cardPrices![0].amazonPrice}",
+                      style: AppStyle.cardDescriptionStyle,
+                    ),
+                    SizedBox(height: 8.0),
+                    StyledText(
+                      text:
+                          "CoolStuffInc: \$${card.cardPrices![0].coolstuffincPrice}",
                       style: AppStyle.cardDescriptionStyle,
                     ),
                   ],

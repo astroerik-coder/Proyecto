@@ -16,52 +16,58 @@ class Card {
 class Datum {
   int id;
   String name;
-  String type;
-  String humanReadableCardType;
-  String frameType;
-  String desc;
-  String race;
-  String archetype;
-  String ygoprodeckUrl;
-  List<CardSet> cardSets;
-  List<CardImage> cardImages;
-  List<CardPrice> cardPrices;
+  String? type; // Hacemos que este campo sea opcional
+  String? humanReadableCardType; // Opcional
+  String? frameType; // Opcional
+  String? desc; // Opcional
+  String? race; // Opcional
+  String? archetype; // Opcional
+  String? ygoprodeckUrl; // Opcional
+  List<CardSet>? cardSets; // Lista opcional
+  List<CardImage>? cardImages; // Lista opcional
+  List<CardPrice>? cardPrices; // Lista opcional
 
   Datum({
     required this.id,
     required this.name,
-    required this.type,
-    required this.humanReadableCardType,
-    required this.frameType,
-    required this.desc,
-    required this.race,
-    required this.archetype,
-    required this.ygoprodeckUrl,
-    required this.cardSets,
-    required this.cardImages,
-    required this.cardPrices,
+    this.type,
+    this.humanReadableCardType,
+    this.frameType,
+    this.desc,
+    this.race,
+    this.archetype,
+    this.ygoprodeckUrl,
+    this.cardSets,
+    this.cardImages,
+    this.cardPrices,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) {
     return Datum(
       id: json['id'],
-      name: json['name'],
-      type: json['type'],
-      humanReadableCardType: json['humanReadableCardType'],
-      frameType: json['frameType'],
-      desc: json['desc'],
-      race: json['race'],
-      archetype: json['archetype'] ?? '', // Manejo de null en arquetipo
-      ygoprodeckUrl: json['ygoprodeck_url'],
-      cardSets: (json['card_sets'] as List)
-          .map((set) => CardSet.fromJson(set))
-          .toList(),
-      cardImages: (json['card_images'] as List)
-          .map((image) => CardImage.fromJson(image))
-          .toList(),
-      cardPrices: (json['card_prices'] as List)
-          .map((price) => CardPrice.fromJson(price))
-          .toList(),
+      name: json['name'] ?? 'Unknown', // Valor por defecto si es null
+      type: json['type'] ?? 'Unknown', // Manejo de null
+      humanReadableCardType: json['humanReadableCardType'] ?? 'Unknown',
+      frameType: json['frameType'] ?? 'Unknown',
+      desc: json['desc'] ?? 'No description available',
+      race: json['race'] ?? 'Unknown',
+      archetype: json['archetype'], // Puede ser null
+      ygoprodeckUrl: json['ygoprodeck_url'], // Puede ser null
+      cardSets: (json['card_sets'] != null)
+          ? (json['card_sets'] as List)
+              .map((set) => CardSet.fromJson(set))
+              .toList()
+          : null, // Lista opcional
+      cardImages: (json['card_images'] != null)
+          ? (json['card_images'] as List)
+              .map((image) => CardImage.fromJson(image))
+              .toList()
+          : null, // Lista opcional
+      cardPrices: (json['card_prices'] != null)
+          ? (json['card_prices'] as List)
+              .map((price) => CardPrice.fromJson(price))
+              .toList()
+          : null, // Lista opcional
     );
   }
 }
@@ -82,9 +88,10 @@ class CardImage {
   factory CardImage.fromJson(Map<String, dynamic> json) {
     return CardImage(
       id: json['id'],
-      imageUrl: json['image_url'],
-      imageUrlSmall: json['image_url_small'],
-      imageUrlCropped: json['image_url_cropped'],
+      imageUrl:
+          json['image_url'] ?? '', // Si es null, devolvemos un string vacío
+      imageUrlSmall: json['image_url_small'] ?? '',
+      imageUrlCropped: json['image_url_cropped'] ?? '',
     );
   }
 }
@@ -106,11 +113,11 @@ class CardPrice {
 
   factory CardPrice.fromJson(Map<String, dynamic> json) {
     return CardPrice(
-      cardmarketPrice: json['cardmarket_price'],
-      tcgplayerPrice: json['tcgplayer_price'],
-      ebayPrice: json['ebay_price'],
-      amazonPrice: json['amazon_price'],
-      coolstuffincPrice: json['coolstuffinc_price'],
+      cardmarketPrice: json['cardmarket_price'] ?? '0.00', // Valor por defecto
+      tcgplayerPrice: json['tcgplayer_price'] ?? '0.00',
+      ebayPrice: json['ebay_price'] ?? '0.00',
+      amazonPrice: json['amazon_price'] ?? '0.00',
+      coolstuffincPrice: json['coolstuffinc_price'] ?? '0.00',
     );
   }
 }
@@ -132,11 +139,12 @@ class CardSet {
 
   factory CardSet.fromJson(Map<String, dynamic> json) {
     return CardSet(
-      setName: json['set_name'],
-      setCode: json['set_code'],
-      setRarity: json['set_rarity'],
-      setRarityCode: json['set_rarity_code'],
-      setPrice: json['set_price'],
+      setName:
+          json['set_name'] ?? 'Unknown', // Si es null, devolvemos 'Unknown'
+      setCode: json['set_code'] ?? 'Unknown',
+      setRarity: json['set_rarity'] ?? 'Unknown',
+      setRarityCode: json['set_rarity_code'] ?? 'Unknown',
+      setPrice: json['set_price'] ?? '0.00', // Valor por defecto si es null
     );
   }
 }

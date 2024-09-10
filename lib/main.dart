@@ -16,24 +16,21 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Yu-Gi-Oh! Cartas',
         theme: ThemeData(
-          brightness: Brightness.dark, // Tema oscuro
-          primaryColor:
-              AppStyle.primaryColor, // Negro oscuro para la barra de app
-          scaffoldBackgroundColor:
-              AppStyle.primaryColor, // Fondo oscuro para la app
+          brightness: Brightness.dark,
+          primaryColor: AppStyle.primaryColor,
+          scaffoldBackgroundColor: AppStyle.primaryColor,
           colorScheme: ColorScheme.dark(
             primary: AppStyle.primaryColor,
             secondary: AppStyle.accentColor,
           ),
           textTheme: TextTheme(
-            displayLarge: AppStyle.headingStyle, // Antes 'headline1'
-            titleLarge: AppStyle.subheadingStyle, // Antes 'headline6'
-            bodyLarge: AppStyle.cardDescriptionStyle, // Antes 'bodyText1'
-            bodyMedium: AppStyle.cardTitleStyle, // Antes 'bodyText2'
+            displayLarge: AppStyle.headingStyle,
+            titleLarge: AppStyle.subheadingStyle,
+            bodyLarge: AppStyle.cardDescriptionStyle,
+            bodyMedium: AppStyle.cardTitleStyle,
           ),
           appBarTheme: AppBarTheme(
-            color: AppStyle.primaryColor, // Color de fondo de la AppBar
-            elevation: 0,
+            color: AppStyle.primaryColor,
           ),
         ),
         home: CardList(),
